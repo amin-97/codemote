@@ -102,3 +102,73 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER after_question_insert
   AFTER INSERT ON questions
   FOR EACH ROW EXECUTE FUNCTION upsert_daily_log();
+
+-- ======================
+-- System Design Tracking
+-- ======================
+
+CREATE TYPE design_status AS ENUM ('completed', 'in-progress', 'revisit');
+
+CREATE TABLE system_designs (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  title TEXT NOT NULL,
+  topic TEXT NOT NULL,
+  difficulty question_difficulty NOT NULL DEFAULT 'medium',
+  status design_status NOT NULL DEFAULT 'in-progress',
+  notes TEXT,
+  key_concepts TEXT[] DEFAULT '{}',
+  time_minutes INTEGER,
+  confidence INTEGER CHECK (confidence >= 1 AND confidence <= 5),
+  studied_at TIMESTAMPTZ DEFAULT NOW(),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Indexes
+CREATE INDEX idx_system_designs_user_id ON system_designs(user_id);
+CREATE INDEX idx_system_designs_studied_at ON system_designs(studied_at);
+CREATE INDEX idx_system_designs_topic ON system_designs(topic);
+
+-- RLS
+ALTER TABLE system_designs ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view own system_designs"
+  ON system_designs FOR SELECT USING (auth.jwt() ->> 'sub' = user_id);
+
+CREATE POLICY "Users can insert own system_designs"
+  ON system_designs FOR INSERT WITH CHECK (auth.jwt() ->> 'sub' = user_id);
+
+CREATE POLICY "Users can update own system_designs"
+  ON system_designs FOR UPDATE USING (auth.jwt() ->> 'sub' = user_id);
+
+CREATE POLICY "Users can delete own system_designs"
+  ON system_designs FOR DELETE USING (auth.jwt() ->> 'sub' = user_id);
+
+-- Auto-update updated_at
+CREATE TRIGGER system_designs_updated_at
+  BEFORE UPDATE ON system_designs
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+-- Auto-populate daily_logs on system design insert
+CREATE OR REPLACE FUNCTION upsert_daily_log_design()
+RETURNS TRIGGER AS $$
+DECLARE
+  studied_date DATE;
+BEGIN
+  studied_date := DATE(NEW.studied_at);
+  INSERT INTO daily_logs (user_id, date, questions_done, topics_covered)
+  VALUES (NEW.user_id, studied_date, 1, ARRAY['SD: ' || NEW.topic])
+  ON CONFLICT (user_id, date)
+  DO UPDATE SET
+    questions_done = daily_logs.questions_done + 1,
+    topics_covered = ARRAY(
+      SELECT DISTINCT unnest(daily_logs.topics_covered || ARRAY['SD: ' || NEW.topic])
+    );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER after_design_insert
+  AFTER INSERT ON system_designs
+  FOR EACH ROW EXECUTE FUNCTION upsert_daily_log_design();

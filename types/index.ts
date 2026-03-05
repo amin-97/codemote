@@ -71,3 +71,34 @@ export interface AIRecommendation {
   suggested_questions: string[];
   priority: "high" | "medium" | "low";
 }
+
+// System Design
+export type DesignStatus = "completed" | "in-progress" | "revisit";
+
+export interface SystemDesign {
+  id: string;
+  user_id: string;
+  title: string;
+  topic: string;
+  difficulty: Difficulty;
+  status: DesignStatus;
+  notes: string | null;
+  key_concepts: string[];
+  time_minutes: number | null;
+  confidence: number | null;
+  studied_at: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SystemDesignInsert {
+  title: string;
+  topic: string;
+  difficulty: Difficulty;
+  status?: DesignStatus;
+  notes?: string;
+  key_concepts?: string[];
+  time_minutes?: number;
+  confidence?: number;
+  studied_at?: string;
+}

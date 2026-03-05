@@ -8,6 +8,7 @@ import {
   ListChecks,
   CalendarDays,
   Sparkles,
+  Blocks,
 } from "lucide-react";
 
 const navItems = [
@@ -20,6 +21,11 @@ const navItems = [
     label: "Questions",
     href: "/questions",
     icon: ListChecks,
+  },
+  {
+    label: "System Design",
+    href: "/system-design",
+    icon: Blocks,
   },
   {
     label: "Daily Review",

@@ -13,7 +13,7 @@ export async function getAIRecommendations(context: string): Promise<string> {
         role: "user",
         parts: [
           {
-            text: `You are an expert coding interview coach. Based on the following LeetCode progress data, provide personalized recommendations.
+            text: `You are an expert coding interview coach. Based on the following LeetCode and system design progress data, provide personalized recommendations covering BOTH areas.
 
 Respond ONLY with valid JSON in this exact format (no markdown, no code fences):
 {
@@ -25,8 +25,10 @@ Respond ONLY with valid JSON in this exact format (no markdown, no code fences):
       "priority": "high" | "medium" | "low"
     }
   ],
-  "summary": "A brief overall assessment"
+  "summary": "A brief overall assessment covering both LeetCode and system design readiness"
 }
+
+Include recommendations for both LeetCode topics AND system design topics where relevant. If the student hasn't started system design yet, strongly recommend they begin.
 
 Student's progress data:
 ${context}`,

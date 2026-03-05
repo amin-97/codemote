@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 40" fill="none">
+  <!-- Icon: rounded square with code brackets + checkmark -->
+  <rect x="2" y="4" width="32" height="32" rx="7" fill="#171717"/>
+  
+  <!-- Left angle bracket -->
+  <path d="M13 14L8.5 20L13 26" stroke="#A3A3A3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Right angle bracket -->
+  <path d="M23 14L27.5 20L23 26" stroke="#A3A3A3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Center checkmark -->
+  <path d="M15 20.5L17.2 22.7L21.5 17.5" stroke="#E5E5E5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Wordmark: "Code" in white, "mote" in gray -->
+  <text x="42" y="26.5" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="20" font-weight="700" letter-spacing="-0.3">
+    <tspan fill="#F5F5F5">Code</tspan><tspan fill="#737373">mote</tspan>
+  </text>
+</svg>s

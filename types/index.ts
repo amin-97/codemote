@@ -56,7 +56,6 @@ export interface Stats {
 export interface TopicStat {
   topic: string;
   solved: number;
-  total: number;
 }
 
 export interface DailyReview {

@@ -106,7 +106,7 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="border-t border-neutral-800/60 px-5 py-3">
-        <p className="text-xs text-neutral-600">NeetCode 150 Tracker</p>
+        <p className="text-xs text-neutral-600">LeetCode Tracker</p>
       </div>
     </aside>
   );

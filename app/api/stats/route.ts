@@ -2,7 +2,6 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import { NEETCODE_TOPICS } from "@/lib/constants";
 
 export async function GET() {
   const { userId } = await auth();
@@ -87,7 +86,7 @@ export async function GET() {
     longest_streak = Math.max(longest_streak, tempStreak);
   }
 
-  // Topics progress
+  // Topics progress — dynamic from user's data
   const topicCounts: Record<string, number> = {};
   q.forEach((x) => {
     if (x.status === "solved") {
@@ -95,10 +94,9 @@ export async function GET() {
     }
   });
 
-  const topics = NEETCODE_TOPICS.map((t) => ({
-    topic: t.name,
-    solved: topicCounts[t.name] || 0,
-    total: t.total,
+  const topics = Object.entries(topicCounts).map(([topic, solved]) => ({
+    topic,
+    solved,
   }));
 
   // Heatmap data (last 365 days)

@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { getAIRecommendations } from "@/lib/gemini";
-import { NEETCODE_TOPICS } from "@/lib/constants";
 
 export async function GET() {
   const { userId } = await auth();
@@ -36,14 +35,11 @@ export async function GET() {
     topicCounts[x.topic][status]++;
   });
 
-  const topicSummary = NEETCODE_TOPICS.map((t) => {
-    const counts = topicCounts[t.name] || {
-      solved: 0,
-      attempted: 0,
-      revisit: 0,
-    };
-    return `${t.name}: ${counts.solved}/${t.total} solved, ${counts.attempted} attempted, ${counts.revisit} need revisit`;
-  }).join("\n");
+  const topicSummary = Object.entries(topicCounts)
+    .map(([name, counts]) => {
+      return `${name}: ${counts.solved} solved, ${counts.attempted} attempted, ${counts.revisit} need revisit`;
+    })
+    .join("\n");
 
   const recentProblems = q
     .sort(

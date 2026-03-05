@@ -1,4 +1,4 @@
--- NeetCode Tracker Schema
+-- LeetCode Tracker Schema
 -- Run this in your Supabase SQL Editor
 
 -- Enum types

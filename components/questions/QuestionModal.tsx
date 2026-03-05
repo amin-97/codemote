@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import { NEETCODE_QUESTIONS, TOPIC_NAMES, LANGUAGES } from "@/lib/constants";
+import { TOPIC_NAMES, LANGUAGES } from "@/lib/constants";
 import type { Question, QuestionInsert, Difficulty, Status } from "@/types";
 
 interface QuestionModalProps {
@@ -38,28 +38,19 @@ export function QuestionModal({
       ? new Date(question.solved_at).toISOString().split("T")[0]
       : new Date().toISOString().split("T")[0],
   );
-
-  const [showSuggestions, setShowSuggestions] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  const suggestions = useMemo(() => {
-    if (!title || title.length < 2) return [];
-    const s = title.toLowerCase();
-    return NEETCODE_QUESTIONS.filter(
-      (q) =>
-        q.title.toLowerCase().includes(s) || String(q.leetcode_num).includes(s),
-    ).slice(0, 8);
-  }, [title]);
-
-  function selectSuggestion(q: (typeof NEETCODE_QUESTIONS)[number]) {
-    setTitle(q.title);
-    setSlug(q.slug);
-    setDifficulty(q.difficulty);
-    setTopic(q.topic);
-    setLeetcodeNum(String(q.leetcode_num));
-    setShowSuggestions(false);
-  }
+  // Auto-generate slug from title
+  useEffect(() => {
+    if (!isEdit && title) {
+      setSlug(
+        title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, ""),
+      );
+    }
+  }, [title, isEdit]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -116,44 +107,19 @@ export function QuestionModal({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Title with autocomplete */}
-          <div className="relative">
+          {/* Title */}
+          <div>
             <label className="mb-1 block text-xs font-medium text-neutral-400">
               Problem Title
             </label>
             <input
-              ref={inputRef}
               type="text"
               value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-                setShowSuggestions(true);
-              }}
-              onFocus={() => setShowSuggestions(true)}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Two Sum"
               required
               className="w-full rounded-lg border border-neutral-700 bg-neutral-800/50 px-3 py-2 text-sm text-neutral-200 placeholder-neutral-600 outline-none focus:border-neutral-500"
             />
-            {showSuggestions && suggestions.length > 0 && (
-              <div className="absolute top-full z-20 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-neutral-700 bg-neutral-800 shadow-xl">
-                {suggestions.map((s) => (
-                  <button
-                    key={s.leetcode_num}
-                    type="button"
-                    onClick={() => selectSuggestion(s)}
-                    className="flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors hover:bg-neutral-700"
-                  >
-                    <span className="font-mono text-xs text-neutral-500">
-                      #{s.leetcode_num}
-                    </span>
-                    <span className="flex-1 text-neutral-200">{s.title}</span>
-                    <span className="text-xs text-neutral-500">
-                      {s.difficulty}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
 
           {/* Topic + Difficulty row */}

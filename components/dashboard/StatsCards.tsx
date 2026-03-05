@@ -12,7 +12,7 @@ export function StatsCards({ stats }: StatsCardsProps) {
     {
       label: "Total Solved",
       value: stats.total_solved,
-      sub: `of 150`,
+      sub: `solved`,
       icon: Target,
       color: "text-emerald-400",
       bg: "bg-emerald-400/10",

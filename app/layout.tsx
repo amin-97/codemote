@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Codemote — NeetCode Tracker",
+  title: "Codemote",
   description: "Track your LeetCode grind with AI-powered recommendations",
 };
 

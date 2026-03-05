@@ -13,7 +13,7 @@ export async function getAIRecommendations(context: string): Promise<string> {
         role: "user",
         parts: [
           {
-            text: `You are an expert coding interview coach. Based on the following LeetCode/NeetCode progress data, provide personalized recommendations.
+            text: `You are an expert coding interview coach. Based on the following LeetCode progress data, provide personalized recommendations.
 
 Respond ONLY with valid JSON in this exact format (no markdown, no code fences):
 {

@@ -9,6 +9,7 @@ import {
   CalendarDays,
   Sparkles,
   Blocks,
+  GraduationCap,
 } from "lucide-react";
 
 const navItems = [
@@ -26,6 +27,11 @@ const navItems = [
     label: "System Design",
     href: "/system-design",
     icon: Blocks,
+  },
+  {
+    label: "Learn",
+    href: "/learn",
+    icon: GraduationCap,
   },
   {
     label: "Daily Review",
@@ -91,7 +97,8 @@ export function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 space-y-1 px-3 py-4">
         {navItems.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive =
+            pathname === item.href || pathname.startsWith(item.href + "/");
           return (
             <Link
               key={item.href}

@@ -102,3 +102,33 @@ export interface SystemDesignInsert {
   confidence?: number;
   studied_at?: string;
 }
+
+// Course / Learn
+export type LessonStatus = "not-started" | "in-progress" | "completed";
+
+export interface LessonProgress {
+  id: string;
+  user_id: string;
+  topic_slug: string;
+  lesson_slug: string;
+  status: LessonStatus;
+  notes: string | null;
+  completed_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CourseLesson {
+  slug: string;
+  title: string;
+  description: string;
+  duration: number; // minutes
+}
+
+export interface CourseTopic {
+  slug: string;
+  title: string;
+  track: "fundamentals" | "patterns" | "advanced";
+  description: string;
+  lessons: CourseLesson[];
+}

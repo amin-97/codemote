@@ -10,6 +10,7 @@ import {
   Sparkles,
   Blocks,
   GraduationCap,
+  FileText,
 } from "lucide-react";
 
 const navItems = [
@@ -32,6 +33,11 @@ const navItems = [
     label: "Learn",
     href: "/learn",
     icon: GraduationCap,
+  },
+  {
+    label: "Solutions",
+    href: "/solutions",
+    icon: FileText,
   },
   {
     label: "Daily Review",

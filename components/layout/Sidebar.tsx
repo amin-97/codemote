@@ -11,6 +11,7 @@ import {
   Blocks,
   GraduationCap,
   FileText,
+  Clock,
 } from "lucide-react";
 
 const navItems = [
@@ -38,6 +39,11 @@ const navItems = [
     label: "Solutions",
     href: "/solutions",
     icon: FileText,
+  },
+  {
+    label: "Timer",
+    href: "/timer",
+    icon: Clock,
   },
   {
     label: "Daily Review",

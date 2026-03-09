@@ -7,9 +7,10 @@ import type { CourseTopic, LessonProgress } from "@/types";
 interface LessonListProps {
   topic: CourseTopic;
   progress: LessonProgress[];
+  baseHref: string;
 }
 
-export function LessonList({ topic, progress }: LessonListProps) {
+export function LessonList({ topic, progress, baseHref }: LessonListProps) {
   function getStatus(lessonSlug: string) {
     return (
       progress.find((p) => p.lesson_slug === lessonSlug)?.status ||
@@ -30,7 +31,7 @@ export function LessonList({ topic, progress }: LessonListProps) {
         return (
           <Link
             key={lesson.slug}
-            href={`/learn/${topic.slug}/${lesson.slug}`}
+            href={`${baseHref}/${topic.slug}/${lesson.slug}`}
             className="group flex items-center gap-4 rounded-lg border border-neutral-800/40 bg-neutral-900/30 px-4 py-3 transition-colors hover:bg-neutral-800/40"
           >
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-neutral-700/50 bg-neutral-800/50">

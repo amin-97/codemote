@@ -1,20 +1,41 @@
 "use client";
 
 import { TopicCard } from "./TopicCard";
-import { TRACKS, CURRICULUM, TOTAL_LESSONS } from "@/lib/course/curriculum";
-import type { LessonProgress } from "@/types";
+import type { CourseTopic, LessonProgress } from "@/types";
 
-interface CurriculumMapProps {
-  progress: LessonProgress[];
+interface Track {
+  id: string;
+  title: string;
+  description: string;
 }
 
-const trackStyles = {
+interface CurriculumMapProps {
+  tracks: readonly Track[];
+  curriculum: CourseTopic[];
+  totalLessons: number;
+  progress: LessonProgress[];
+  baseHref: string; // e.g. "/learn", "/dsa", "/oop"
+}
+
+const trackStyles: Record<string, { dot: string; text: string }> = {
   fundamentals: { dot: "bg-emerald-400", text: "text-emerald-400" },
   patterns: { dot: "bg-sky-400", text: "text-sky-400" },
   advanced: { dot: "bg-amber-400", text: "text-amber-400" },
+  core: { dot: "bg-emerald-400", text: "text-emerald-400" },
+  structures: { dot: "bg-sky-400", text: "text-sky-400" },
+  algorithms: { dot: "bg-amber-400", text: "text-amber-400" },
+  principles: { dot: "bg-emerald-400", text: "text-emerald-400" },
+  design: { dot: "bg-sky-400", text: "text-sky-400" },
+  practice: { dot: "bg-amber-400", text: "text-amber-400" },
 };
 
-export function CurriculumMap({ progress }: CurriculumMapProps) {
+export function CurriculumMap({
+  tracks,
+  curriculum,
+  totalLessons,
+  progress,
+  baseHref,
+}: CurriculumMapProps) {
   const completedTotal = progress.filter(
     (p) => p.status === "completed",
   ).length;
@@ -32,23 +53,28 @@ export function CurriculumMap({ progress }: CurriculumMapProps) {
               {completedTotal}
               <span className="text-base font-normal text-neutral-500">
                 {" "}
-                / {TOTAL_LESSONS} lessons
+                / {totalLessons} lessons
               </span>
             </p>
           </div>
           <div className="h-2 w-48 overflow-hidden rounded-full bg-neutral-800">
             <div
               className="h-full rounded-full bg-emerald-500/80 transition-all duration-500"
-              style={{ width: `${(completedTotal / TOTAL_LESSONS) * 100}%` }}
+              style={{
+                width: `${totalLessons > 0 ? (completedTotal / totalLessons) * 100 : 0}%`,
+              }}
             />
           </div>
         </div>
       </div>
 
       {/* Tracks */}
-      {TRACKS.map((track) => {
-        const topics = CURRICULUM.filter((t) => t.track === track.id);
-        const style = trackStyles[track.id as keyof typeof trackStyles];
+      {tracks.map((track) => {
+        const topics = curriculum.filter((t) => t.track === track.id);
+        const style = trackStyles[track.id] || {
+          dot: "bg-neutral-400",
+          text: "text-neutral-400",
+        };
 
         return (
           <div key={track.id}>
@@ -72,6 +98,7 @@ export function CurriculumMap({ progress }: CurriculumMapProps) {
                     key={topic.slug}
                     topic={topic}
                     progress={topicProgress}
+                    baseHref={baseHref}
                   />
                 );
               })}

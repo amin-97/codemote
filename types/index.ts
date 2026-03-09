@@ -72,7 +72,10 @@ export interface AIRecommendation {
   priority: "high" | "medium" | "low";
 }
 
+// =============================
 // System Design
+// =============================
+
 export type DesignStatus = "completed" | "in-progress" | "revisit";
 
 export interface SystemDesign {
@@ -103,7 +106,10 @@ export interface SystemDesignInsert {
   studied_at?: string;
 }
 
+// =============================
 // Course / Learn
+// =============================
+
 export type LessonStatus = "not-started" | "in-progress" | "completed";
 
 export interface LessonProgress {
@@ -125,10 +131,18 @@ export interface CourseLesson {
   duration: number; // minutes
 }
 
+export type CourseTrack =
+  | "core"
+  | "structures"
+  | "algorithms"
+  | "principles"
+  | "design"
+  | "practice";
+
 export interface CourseTopic {
   slug: string;
   title: string;
-  track: "fundamentals" | "patterns" | "advanced";
+  track: CourseTrack;
   description: string;
   lessons: CourseLesson[];
 }

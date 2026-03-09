@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { LessonViewer } from "@/components/learn/LessonViewer";
-import { getTopicBySlug } from "@/lib/course/curriculum";
+import { getOopTopicBySlug } from "@/lib/oop/curriculum";
 import type { LessonProgress, LessonStatus } from "@/types";
 
-export default function LessonPage() {
+export default function OopLessonPage() {
   const params = useParams();
   const topicSlug = params.topicSlug as string;
   const lessonSlug = params.lessonSlug as string;
-  const topic = getTopicBySlug(topicSlug);
+  const topic = getOopTopicBySlug(topicSlug);
 
   const [content, setContent] = useState<{
     title: string;
@@ -23,11 +23,8 @@ export default function LessonPage() {
   useEffect(() => {
     async function load() {
       try {
-        const track = topic?.track;
-        if (track) {
-          const mod = await import(
-            `@/lib/course/content/${track}/${topicSlug}`
-          );
+        if (topic) {
+          const mod = await import(`@/lib/oop/content/${topicSlug}`);
           setContent(mod.lessons?.[lessonSlug] || null);
         }
         const res = await fetch(`/api/learn/progress?topic=${topicSlug}`);
@@ -45,7 +42,7 @@ export default function LessonPage() {
       }
     }
     load();
-  }, [topicSlug, lessonSlug, topic?.track]);
+  }, [topicSlug, lessonSlug, topic]);
 
   async function handleUpdateProgress(status: LessonStatus, notes: string) {
     await fetch("/api/learn/progress", {
@@ -64,32 +61,26 @@ export default function LessonPage() {
     return (
       <div className="flex flex-col items-center justify-center py-20">
         <p className="text-neutral-400">Topic not found</p>
-        <Link
-          href="/learn"
-          className="mt-2 text-sm text-sky-400 hover:underline"
-        >
-          Back to course
+        <Link href="/oop" className="mt-2 text-sm text-sky-400 hover:underline">
+          Back to OOP
         </Link>
       </div>
     );
   }
-
   if (loading) {
     return (
       <div className="mx-auto max-w-3xl space-y-4">
         <div className="h-8 w-64 animate-pulse rounded bg-neutral-900" />
-        <div className="h-16 animate-pulse rounded-xl bg-neutral-900" />
         <div className="h-96 animate-pulse rounded-xl bg-neutral-900" />
       </div>
     );
   }
-
   if (!content) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
         <p className="text-neutral-400">Lesson not found</p>
         <Link
-          href={`/learn/${topicSlug}`}
+          href={`/oop/${topicSlug}`}
           className="mt-2 text-sm text-sky-400 hover:underline"
         >
           Back to {topic.title}
@@ -117,7 +108,7 @@ export default function LessonPage() {
       onUpdateProgress={handleUpdateProgress}
       prevLesson={prevLesson}
       nextLesson={nextLesson}
-      baseHref="/learn"
+      baseHref="/oop"
     />
   );
 }

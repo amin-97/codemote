@@ -2,10 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { CurriculumMap } from "@/components/learn/CurriculumMap";
-import { TRACKS, CURRICULUM, TOTAL_LESSONS } from "@/lib/course/curriculum";
+import {
+  OOP_TRACKS,
+  OOP_CURRICULUM,
+  OOP_TOTAL_LESSONS,
+} from "@/lib/oop/curriculum";
 import type { LessonProgress } from "@/types";
 
-export default function LearnPage() {
+export default function OopPage() {
   const [progress, setProgress] = useState<LessonProgress[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,19 +48,18 @@ export default function LearnPage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-semibold text-neutral-100">
-          System Design Course
+          Object-Oriented Programming
         </h2>
         <p className="text-sm text-neutral-500">
-          Master the building blocks, patterns, and advanced concepts for system
-          design interviews
+          OOP principles, design patterns, and classic interview problems
         </p>
       </div>
       <CurriculumMap
-        tracks={TRACKS}
-        curriculum={CURRICULUM}
-        totalLessons={TOTAL_LESSONS}
+        tracks={OOP_TRACKS}
+        curriculum={OOP_CURRICULUM}
+        totalLessons={OOP_TOTAL_LESSONS}
         progress={progress}
-        baseHref="/learn"
+        baseHref="/oop"
       />
     </div>
   );

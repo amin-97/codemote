@@ -16,6 +16,7 @@ interface LessonViewerProps {
   onUpdateProgress: (status: LessonStatus, notes: string) => Promise<void>;
   prevLesson?: { slug: string; title: string } | null;
   nextLesson?: { slug: string; title: string } | null;
+  baseHref: string;
 }
 
 export function LessonViewer({
@@ -29,6 +30,7 @@ export function LessonViewer({
   onUpdateProgress,
   prevLesson,
   nextLesson,
+  baseHref,
 }: LessonViewerProps) {
   const [status, setStatus] = useState<LessonStatus>(initialStatus);
   const [notes, setNotes] = useState(initialNotes);
@@ -184,11 +186,14 @@ export function LessonViewer({
     <div className="mx-auto max-w-3xl">
       {/* Breadcrumb */}
       <div className="mb-6 flex items-center gap-2 text-sm text-neutral-500">
-        <Link href="/learn" className="hover:text-neutral-300">
+        <Link href={baseHref} className="hover:text-neutral-300">
           Learn
         </Link>
         <span>/</span>
-        <Link href={`/learn/${topicSlug}`} className="hover:text-neutral-300">
+        <Link
+          href={`${baseHref}/${topicSlug}`}
+          className="hover:text-neutral-300"
+        >
           {topicTitle}
         </Link>
         <span>/</span>
@@ -279,7 +284,7 @@ export function LessonViewer({
       <div className="mt-6 flex items-center justify-between">
         {prevLesson ? (
           <Link
-            href={`/learn/${topicSlug}/${prevLesson.slug}`}
+            href={`${baseHref}/${topicSlug}/${prevLesson.slug}`}
             className="flex items-center gap-2 rounded-lg border border-neutral-800 px-4 py-2 text-sm text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-neutral-200"
           >
             <ChevronLeft className="h-4 w-4" />
@@ -287,7 +292,7 @@ export function LessonViewer({
           </Link>
         ) : (
           <Link
-            href={`/learn/${topicSlug}`}
+            href={`${baseHref}/${topicSlug}`}
             className="flex items-center gap-2 rounded-lg border border-neutral-800 px-4 py-2 text-sm text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-neutral-200"
           >
             <ChevronLeft className="h-4 w-4" />
@@ -296,7 +301,7 @@ export function LessonViewer({
         )}
         {nextLesson && (
           <Link
-            href={`/learn/${topicSlug}/${nextLesson.slug}`}
+            href={`${baseHref}/${topicSlug}/${nextLesson.slug}`}
             className="rounded-lg bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-900 transition-colors hover:bg-white"
           >
             Next: {nextLesson.title} →

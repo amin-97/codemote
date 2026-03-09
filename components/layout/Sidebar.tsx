@@ -12,6 +12,8 @@ import {
   GraduationCap,
   FileText,
   Clock,
+  Code,
+  BookOpen,
 } from "lucide-react";
 
 const navItems = [
@@ -39,6 +41,16 @@ const navItems = [
     label: "Solutions",
     href: "/solutions",
     icon: FileText,
+  },
+  {
+    label: "DSA",
+    href: "/dsa",
+    icon: Code,
+  },
+  {
+    label: "OOP",
+    href: "/oop",
+    icon: BookOpen,
   },
   {
     label: "Timer",

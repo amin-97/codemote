@@ -6,13 +6,13 @@ import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { LessonList } from "@/components/learn/LessonList";
 import { ProgressRing } from "@/components/learn/ProgressRing";
-import { getTopicBySlug } from "@/lib/course/curriculum";
+import { getDsaTopicBySlug } from "@/lib/dsa/curriculum";
 import type { LessonProgress } from "@/types";
 
-export default function TopicPage() {
+export default function DsaTopicPage() {
   const params = useParams();
   const topicSlug = params.topicSlug as string;
-  const topic = getTopicBySlug(topicSlug);
+  const topic = getDsaTopicBySlug(topicSlug);
 
   const [progress, setProgress] = useState<LessonProgress[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,10 +36,7 @@ export default function TopicPage() {
     return (
       <div className="flex flex-col items-center justify-center py-20">
         <p className="text-neutral-400">Topic not found</p>
-        <Link
-          href="/learn"
-          className="mt-2 text-sm text-sky-400 hover:underline"
-        >
+        <Link href="/dsa" className="mt-2 text-sm text-sky-400 hover:underline">
           Back to course
         </Link>
       </div>
@@ -49,9 +46,9 @@ export default function TopicPage() {
   const completed = progress.filter((p) => p.status === "completed").length;
   const total = topic.lessons.length;
   const trackLabels: Record<string, { label: string; color: string }> = {
-    fundamentals: { label: "Fundamentals", color: "text-emerald-400" },
-    patterns: { label: "Design Patterns", color: "text-sky-400" },
-    advanced: { label: "Advanced", color: "text-amber-400" },
+    core: { label: "Core Concepts", color: "text-emerald-400" },
+    structures: { label: "Data Structures", color: "text-sky-400" },
+    algorithms: { label: "Algorithms", color: "text-amber-400" },
   };
   const track = trackLabels[topic.track] || {
     label: topic.track,
@@ -62,10 +59,10 @@ export default function TopicPage() {
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
         <Link
-          href="/learn"
+          href="/dsa"
           className="mb-3 flex items-center gap-1.5 text-sm text-neutral-500 hover:text-neutral-300"
         >
-          <ChevronLeft className="h-3.5 w-3.5" /> Back to Course
+          <ChevronLeft className="h-3.5 w-3.5" /> Back to DSA
         </Link>
         <div className="flex items-center gap-4">
           <ProgressRing
@@ -94,7 +91,7 @@ export default function TopicPage() {
           ))}
         </div>
       ) : (
-        <LessonList topic={topic} progress={progress} baseHref="/learn" />
+        <LessonList topic={topic} progress={progress} baseHref="/dsa" />
       )}
     </div>
   );

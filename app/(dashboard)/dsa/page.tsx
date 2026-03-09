@@ -2,10 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { CurriculumMap } from "@/components/learn/CurriculumMap";
-import { TRACKS, CURRICULUM, TOTAL_LESSONS } from "@/lib/course/curriculum";
+import {
+  DSA_TRACKS,
+  DSA_CURRICULUM,
+  DSA_TOTAL_LESSONS,
+} from "@/lib/dsa/curriculum";
 import type { LessonProgress } from "@/types";
 
-export default function LearnPage() {
+export default function DsaPage() {
   const [progress, setProgress] = useState<LessonProgress[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,19 +48,18 @@ export default function LearnPage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-semibold text-neutral-100">
-          System Design Course
+          Data Structures & Algorithms
         </h2>
         <p className="text-sm text-neutral-500">
-          Master the building blocks, patterns, and advanced concepts for system
-          design interviews
+          Master the core patterns and techniques for coding interviews
         </p>
       </div>
       <CurriculumMap
-        tracks={TRACKS}
-        curriculum={CURRICULUM}
-        totalLessons={TOTAL_LESSONS}
+        tracks={DSA_TRACKS}
+        curriculum={DSA_CURRICULUM}
+        totalLessons={DSA_TOTAL_LESSONS}
         progress={progress}
-        baseHref="/learn"
+        baseHref="/dsa"
       />
     </div>
   );

@@ -7,9 +7,10 @@ import type { CourseTopic, LessonProgress } from "@/types";
 interface TopicCardProps {
   topic: CourseTopic;
   progress: LessonProgress[];
+  baseHref: string;
 }
 
-export function TopicCard({ topic, progress }: TopicCardProps) {
+export function TopicCard({ topic, progress, baseHref }: TopicCardProps) {
   const totalLessons = topic.lessons.length;
   const completedLessons = progress.filter(
     (p) => p.status === "completed",
@@ -19,16 +20,22 @@ export function TopicCard({ topic, progress }: TopicCardProps) {
   ).length;
   const progressRatio = totalLessons > 0 ? completedLessons / totalLessons : 0;
 
-  const trackColors = {
+  const trackColors: Record<string, string> = {
     fundamentals: "border-l-emerald-500/50",
     patterns: "border-l-sky-500/50",
     advanced: "border-l-amber-500/50",
+    core: "border-l-emerald-500/50",
+    structures: "border-l-sky-500/50",
+    algorithms: "border-l-amber-500/50",
+    principles: "border-l-emerald-500/50",
+    design: "border-l-sky-500/50",
+    practice: "border-l-amber-500/50",
   };
 
   return (
     <Link
-      href={`/learn/${topic.slug}`}
-      className={`group flex items-center gap-4 rounded-xl border border-neutral-800/60 border-l-2 ${trackColors[topic.track]} bg-neutral-900/50 p-4 transition-colors hover:bg-neutral-800/40`}
+      href={`${baseHref}/${topic.slug}`}
+      className={`group flex items-center gap-4 rounded-xl border border-neutral-800/60 border-l-2 ${trackColors[topic.track] || "border-l-neutral-500/50"} bg-neutral-900/50 p-4 transition-colors hover:bg-neutral-800/40`}
     >
       <ProgressRing progress={progressRatio} size={44} strokeWidth={3} />
 

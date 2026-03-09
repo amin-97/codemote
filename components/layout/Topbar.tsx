@@ -9,6 +9,8 @@ const pageTitles: Record<string, string> = {
   "/system-design": "System Design",
   "/learn": "Learn",
   "/solutions": "Solutions",
+  "/dsa": "Data Structures & Algorithms",
+  "/oop": "Object-Oriented Programming",
   "/timer": "Timer",
   "/daily-review": "Daily Review",
   "/ai-recommend": "AI Recommendations",
@@ -22,7 +24,11 @@ export function Topbar() {
       ? "Learn"
       : pathname.startsWith("/solutions")
         ? "Solutions"
-        : "Dashboard");
+        : pathname.startsWith("/dsa")
+          ? "Data Structures & Algorithms"
+          : pathname.startsWith("/oop")
+            ? "Object-Oriented Programming"
+            : "Dashboard");
 
   return (
     <header className="flex h-14 items-center justify-between border-b border-neutral-800/60 bg-neutral-950 px-6">

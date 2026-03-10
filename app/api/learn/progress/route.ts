@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
+import { supabaseAdmin } from "@/lib/supabase/admin";
 
 // GET — fetch all lesson progress for user
 export async function GET(req: NextRequest) {
@@ -9,7 +8,7 @@ export async function GET(req: NextRequest) {
   if (!userId)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const supabase = createClient(cookies());
+  const supabase = supabaseAdmin;
   const { searchParams } = new URL(req.url);
 
   let query = supabase
@@ -39,7 +38,7 @@ export async function POST(req: NextRequest) {
   if (!topic_slug || !lesson_slug)
     return NextResponse.json({ error: "Missing slugs" }, { status: 400 });
 
-  const supabase = createClient(cookies());
+  const supabase = supabaseAdmin;
 
   const updates: Record<string, unknown> = { status };
   if (notes !== undefined) updates.notes = notes;

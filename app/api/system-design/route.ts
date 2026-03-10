@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
+import { supabaseAdmin } from "@/lib/supabase/admin";
 
 // GET — fetch all system designs for user
 export async function GET(req: NextRequest) {
@@ -9,7 +8,7 @@ export async function GET(req: NextRequest) {
   if (!userId)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const supabase = createClient(cookies());
+  const supabase = supabaseAdmin;
   const { searchParams } = new URL(req.url);
 
   let query = supabase
@@ -41,7 +40,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
-  const supabase = createClient(cookies());
+  const supabase = supabaseAdmin;
 
   const { data, error } = await supabase
     .from("system_designs")
@@ -66,7 +65,7 @@ export async function PUT(req: NextRequest) {
   if (!id)
     return NextResponse.json({ error: "Missing design ID" }, { status: 400 });
 
-  const supabase = createClient(cookies());
+  const supabase = supabaseAdmin;
 
   const { data, error } = await supabase
     .from("system_designs")
@@ -93,7 +92,7 @@ export async function DELETE(req: NextRequest) {
   if (!id)
     return NextResponse.json({ error: "Missing design ID" }, { status: 400 });
 
-  const supabase = createClient(cookies());
+  const supabase = supabaseAdmin;
 
   const { error } = await supabase
     .from("system_designs")
